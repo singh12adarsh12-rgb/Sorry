@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
+<title>For You ❤️</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
@@ -31,12 +30,11 @@ align-items:center;
 justify-content:center;
 z-index:1000;
 flex-direction:column;
-animation:cloudOpen 2s ease forwards;
 }
 
 #tapScreen h1{
 font-family:'Great Vibes',cursive;
-font-size:38px;
+font-size:40px;
 animation:pulse 2s infinite;
 }
 
@@ -44,11 +42,6 @@ animation:pulse 2s infinite;
 0%{opacity:0.6}
 50%{opacity:1}
 100%{opacity:0.6}
-}
-
-@keyframes cloudOpen{
-0%{clip-path:circle(0% at 50% 50%)}
-100%{clip-path:circle(150% at 50% 50%)}
 }
 
 /* Floating Hearts */
@@ -69,8 +62,9 @@ animation:floatUp 8s linear infinite;
 #lyrics{
 font-family:'Great Vibes',cursive;
 font-size:32px;
-margin-top:50px;
+margin-top:60px;
 white-space:pre-line;
+padding:10px;
 }
 
 /* Notes */
@@ -89,7 +83,7 @@ transition:opacity 1s;
 
 /* Question */
 #question{
-margin-top:50px;
+margin-top:60px;
 opacity:0;
 transition:opacity 1s;
 }
@@ -120,7 +114,6 @@ position:relative;
 
 #lyrics{
 font-size:26px;
-padding:10px;
 }
 
 .note{
@@ -150,7 +143,6 @@ max-width:280px;
 </audio>
 
 <div id="lyrics"></div>
-
 <div id="note1" class="note"></div>
 <div id="note2" class="note"></div>
 
@@ -191,7 +183,7 @@ function typing(){
 if(i<text.length){
 element.innerHTML+=text.charAt(i);
 i++;
-window.scrollTo(0,document.body.scrollHeight);
+window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 setTimeout(typing,speed);
 }else{
 if(callback) callback();
@@ -236,23 +228,39 @@ document.getElementById("question").style.opacity=1;
 
 }
 
-/* Running No button */
+/* YES button */
+document.getElementById("yesBtn").addEventListener("click",function(){
+alert("Thank you for giving me another chance ❤️");
+});
+
+/* SUPER UNCLICKABLE NO BUTTON */
+
 const noBtn=document.getElementById("noBtn");
 
-function moveNo(){
-noBtn.style.position="absolute";
-let x=Math.random()*(window.innerWidth-120);
-let y=Math.random()*(window.innerHeight-60);
+function moveNoButton(){
+noBtn.style.position="fixed";
+let padding=20;
+let x=Math.random()*(window.innerWidth-noBtn.offsetWidth-padding);
+let y=Math.random()*(window.innerHeight-noBtn.offsetHeight-padding);
 noBtn.style.left=x+"px";
 noBtn.style.top=y+"px";
 }
 
-noBtn.addEventListener("mouseover",moveNo);
-noBtn.addEventListener("touchstart",moveNo);
+noBtn.addEventListener("mouseover",moveNoButton);
 
-/* Yes button */
-document.getElementById("yesBtn").addEventListener("click",function(){
-alert("Thank you for giving me another chance ❤️");
+noBtn.addEventListener("touchstart",function(e){
+e.preventDefault();
+moveNoButton();
+});
+
+document.addEventListener("touchmove",function(e){
+let touch=e.touches[0];
+let rect=noBtn.getBoundingClientRect();
+let dx=Math.abs(touch.clientX-(rect.left+rect.width/2));
+let dy=Math.abs(touch.clientY-(rect.top+rect.height/2));
+if(dx<80 && dy<80){
+moveNoButton();
+}
 });
 
 </script>
